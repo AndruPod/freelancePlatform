@@ -16,15 +16,18 @@ const Offer = sequelize.define('Offer', {
 })
 
 const UserOffer = sequelize.define('UserOffer', {
-    user_id: {type: DataTypes.INTEGER, allowNull: false, references: {model: User, key: 'id'}},
-    offer_id: {type: DataTypes.INTEGER, allowNull: false, references: {model: Offer, key: 'id'}},
+    user_id: {type: DataTypes.INTEGER, primaryKey: true},
+    offer_id: {type: DataTypes.INTEGER, primaryKey: true},
 })
 
-User.hasMany(Offer)
-Offer.belongsTo(User)
+User.hasMany(UserOffer, {foreignKey: 'user_id'})
+UserOffer.belongsTo(User, {foreignKey: 'user_id', as: 'user'})
+
+Offer.hasMany(UserOffer, {foreignKey: 'offer_id'})
+UserOffer.belongsTo(Offer, {foreignKey: 'offer_id', as: 'offer'})
 
 User.belongsToMany(Offer, { through: UserOffer, foreignKey: 'user_id' })
-Offer.belongsToMany(User, { through: UserOffer, foreignKey: 'offer_id'  })
+Offer.belongsToMany(User, { through: UserOffer, foreignKey: 'offer_id' })
 
 export {
     User,

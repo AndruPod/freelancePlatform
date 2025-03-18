@@ -29,8 +29,8 @@ class UserController {
             const user = await User.create({
                 username: username,
                 password: hashedPassword,
-                role: role}
-            );
+                role: role
+            });
 
             const token = generateJwt(user.id, user.username, user.role);
             return {user, token};
@@ -83,14 +83,22 @@ class UserController {
     }
 
     async getOneUser(id) {
-        // return await User.findOne({where: {id: id}})
-        return [
-            {id: 0, username: "111", email: "123@", role: "user"},
-            {id: 1, username: "222", email: "222@", role: "user"},
-            {id: 2, username: "333", email: "333@", role: "user"},
-            {id: 3, username: "444", email: "444@", role: "user"},
-            {id: 4, username: "555", email: "555@", role: "user"},
-        ].find(user => user.id === Number(id))
+        try {
+
+            if(!id) {
+                return ApiError.badRequest("User ID should be provided");
+            }
+
+            const user = await User.findOne({where: {id}});
+            if (!user) {
+                return ApiError.badRequest("User does not exist");
+            }
+
+            return user;
+
+        } catch(e) {
+            return ApiError.internal("Something went wrong", e);
+        }
     }
 
 }

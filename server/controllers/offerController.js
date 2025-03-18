@@ -7,11 +7,11 @@ class OfferController {
         try {
             const {title, description, category} = input;
 
-            const offer = await Offer.create({title, description, category, UserId: user.id});
+            const offer = await Offer.create({title, description, category}, {raw: true});
             await UserOffer.create({user_id: user.id, offer_id: offer.id});
             return offer;
         } catch (e) {
-            return ApiError.internal("Something went wrong", e);
+            return ApiError.internal(e);
         }
     }
 
@@ -26,7 +26,7 @@ class OfferController {
             return true;
 
         } catch(e) {
-            return ApiError.internal("Something went wrong", e);
+            return ApiError.internal("Something went wrong");
         }
     }
 
@@ -34,22 +34,25 @@ class OfferController {
 
         try {
             const offers = await Offer.findAndCountAll();
-            const offerList = offers.rows.map(offer => ({
+            return offers.rows.map(offer => ({
                 id: offer.id,
                 title: offer.title,
                 description: offer.description,
                 category: offer.category,
                 })
             );
-            return offerList;
         } catch(e) {
-            return ApiError.internal("Something went wrong", e);
+            return ApiError.internal("Something went wrong");
         }
 
     }
 
     async getOneOffer(id) {
         try {
+
+            if(!id) {
+                return ApiError.badRequest("Offer ID should be provided");
+            }
 
             const offer = await Offer.findOne({where: {id}});
             if(!offer) {
@@ -59,7 +62,7 @@ class OfferController {
             return offer;
 
         } catch(e) {
-            return ApiError.internal("Something went wrong", e);
+            return ApiError.internal("Something went wrong");
         }
     }
 

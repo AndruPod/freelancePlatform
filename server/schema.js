@@ -17,8 +17,8 @@ export const typeDefs = `#graphql
     }
     type UserOffer {
         id: UserOfferID!
-        user: User!
-        offer: Offer!
+        user: ID
+        offer: ID
     }
     input UserInput {
         id: ID
@@ -42,7 +42,7 @@ export const typeDefs = `#graphql
         getAllOffers: [Offer]
         getOneOffer(id: ID!): Offer
         getAllUserOffers: [UserOffer]
-        getOneUserOffer(id: ID!): Offer
+        getOneUserOffer(id: ID!): UserOffer
     }
     type Mutation {
         register(input: UserInput!): AuthPayload!

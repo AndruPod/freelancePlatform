@@ -16,7 +16,6 @@ const createContext = async ({req}) => {
         return {user: decoded, error: null};
 
     } catch(e) {
-        console.log(e);
         return {user: null, error: "Unauthorized"};
     }
 }
