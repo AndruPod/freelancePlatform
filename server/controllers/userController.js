@@ -2,6 +2,7 @@ import {User} from "../models/models.js";
 import bcrypt from "bcrypt";
 import ApiError from "../error/ApiError.js";
 import jwt from "jsonwebtoken";
+import {jwtDecode} from "jwt-decode";
 
 const generateJwt = (id, username, role) => {
     return jwt.sign(
@@ -9,7 +10,6 @@ const generateJwt = (id, username, role) => {
         process.env.JWT_SECRET_KEY,
         {expiresIn: '24h'});
 }
-
 
 class UserController {
 
@@ -36,7 +36,7 @@ class UserController {
             return {user, token};
 
         } catch (e) {
-            console.error(e);
+            return ApiError.badRequest("Something went wrong");
         }
     }
 
@@ -63,6 +63,19 @@ class UserController {
 
         } catch (e) {
             return ApiError.internal("Something went wrong", e);
+        }
+    }
+
+    async check({token}) {
+        try {
+            if(!token) {
+                return ApiError.badRequest("Unauthorized");
+            }
+            const {id, username, role} = token;
+            const newToken = generateJwt(id, username, role);
+            return {token: newToken};
+        } catch (e) {
+            return ApiError.internal("Something went wrong");
         }
     }
 
