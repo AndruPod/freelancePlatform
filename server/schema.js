@@ -2,7 +2,7 @@ export const typeDefs = `#graphql
     type User {
         id: ID!
         username: String!
-        email: String!
+        password: String!
         role: String!
     }
     type Offer {
@@ -32,8 +32,12 @@ export const typeDefs = `#graphql
         description: String!
         category: String!
     }
-    type AuthPayload {
-        user: User!
+    input CheckAuthInput {
+        id: ID!
+        username: String!
+        role: String!
+    }
+    type Token {
         token: String!
     }
     type Query {
@@ -43,10 +47,11 @@ export const typeDefs = `#graphql
         getOneOffer(id: ID!): Offer
         getAllUserOffers: [UserOffer]
         getOneUserOffer(id: ID!): UserOffer
+        checkAuth: Token!
     }
     type Mutation {
-        register(input: UserInput!): AuthPayload!
-        login(input: UserInput!): AuthPayload!
+        register(input: UserInput!): Token!
+        login(input: UserInput!): Token!
         addOffer(input: OfferInput!): Offer!
         removeOffer(id: ID!): Boolean!
     }
