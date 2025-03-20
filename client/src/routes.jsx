@@ -1,0 +1,8 @@
+export const LOGIN_ROUTE = '/login'
+export const REGISTER_ROUTE = '/register'
+export const ADMIN_ROUTE = '/admin'
+export const HOME_ROUTE = '/home'
+export const DEFAULT_ROUTE = '*'
+export const PROPERTIES_ROUTE = '/properties'
+// export const _ROUTE = '/'
+// export const _ROUTE = '/'
