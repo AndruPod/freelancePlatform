@@ -6,17 +6,17 @@ const createContext = async ({req}) => {
         const authToken = req.headers.authorization;
 
         if(!authToken){
-            return {user: null, error: "No token provided"}
+            return {token: null}
         }
 
         const token = authToken.split(' ')[1];
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-        return {user: decoded, error: null};
+        return {token: decoded};
 
     } catch(e) {
-        return {user: null, error: "Unauthorized"};
+        return {token: null};
     }
 }
 
