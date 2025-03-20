@@ -1,6 +1,7 @@
 import UserController from "../controllers/userController.js";
 import OfferController from "../controllers/offerController.js";
 import userOfferController from "../controllers/userOfferController.js";
+import userController from "../controllers/userController.js";
 
 export const resolvers = {
     Query: {
@@ -16,8 +17,10 @@ export const resolvers = {
             userOfferController.getAllUserOffers(),
         getOneUserOffer: (_, {id}) =>
             userOfferController.getOneUserOffer(id),
-
+        checkAuth: (_, __, context) =>
+            userController.check(context),
     },
+
     Mutation: {
         register: (_, {input}) =>
             UserController.register(input.username, input.password),

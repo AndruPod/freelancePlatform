@@ -7,7 +7,6 @@ import {resolvers} from "./resolvers/resolver.js";
 import cors from "cors";
 import http from "http";
 import {typeDefs} from './schema.js';
-import jwt from "jsonwebtoken";
 import createContext from "./utils/context.js";
 
 const PORT = process.env.PORT;
